@@ -1677,7 +1677,9 @@ TEST_F(DBTest, DestroyEmptyDir) {
   std::vector<std::string> children;
   ASSERT_LEVELDB_OK(env.GetChildren(dbname, &children));
   // The stock Env's do not filter out '.' and '..' special files.
+#if !defined(LEVELDB_PLATFORM_CHROMIUM)
   ASSERT_EQ(2, children.size());
+#endif
   ASSERT_LEVELDB_OK(DestroyDB(dbname, opts));
   ASSERT_TRUE(!env.FileExists(dbname));
 
